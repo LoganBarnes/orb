@@ -1,0 +1,8 @@
+#pragma once
+
+#include <string>
+
+namespace hmr
+{
+const static std::string SHADER_PATH = "@CMAKE_CURRENT_SOURCE_DIR@/src/shaders/";
+}
