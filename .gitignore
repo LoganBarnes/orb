@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# ImGui files
+*.ini
+
+# Out of source builds
+*build*
