@@ -39,7 +39,7 @@ vec3 rotate_vector(in vec3 v, in float angle, in vec3 axis)
         oc * axis.x * axis.x + c,          oc * axis.x * axis.y - axis.z * s, oc * axis.z * axis.x + axis.y * s,
         oc * axis.x * axis.y + axis.z * s, oc * axis.y * axis.y + c,          oc * axis.y * axis.z - axis.x * s,
         oc * axis.z * axis.x - axis.y * s, oc * axis.y * axis.z + axis.x * s, oc * axis.z * axis.z + c
-        );
+    );
 
     return rot * v;
 }
@@ -158,7 +158,6 @@ void curve_point(in float t, in float theta, out vec3 point, out vec3 normal)
     vec3 deriv = N[1][0] * P1 + N[1][1] * P2 + N[1][2] * P3;
 
     normal = normalize(rotate_vector(deriv, -PI * 0.5, vec3(-sin(theta), 0, cos(theta))));
-//    normal = vec3(-sin(theta), 0, cos(theta));
     return;
 }
 
@@ -169,7 +168,6 @@ void main(void)
 
     vec3 point, normal;
     curve_point(tex_coords.y, theta, point, normal);
-//    vec3 normal = sphere_point(phi, theta);
 
     vertex.world_position = vec3(world_from_local * vec4(point, 1.0));
     vertex.world_normal = normalize(world_from_local_normals * normal);
