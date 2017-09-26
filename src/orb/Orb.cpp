@@ -1,23 +1,21 @@
 #include <orb/Orb.hpp>
 #include <glm/gtc/constants.hpp>
+#include <orb/OrbUtil.hpp>
 
-namespace sim
+namespace vmp
 {
 
-namespace {
-float safe_cast_d_to_f(double d, double eps = 1.0e-4) {
-    return (d < eps ? 0.0f : static_cast<float>(d));
-}
-}
+Orb::Orb(std::size_t size)
+    : fft_vals_(size, 0)
+{}
 
-Orb::Orb(std::size_t size) : fft_vals_(size) {}
-
-void Orb::update(double curr_time, double)
+void Orb::update(double curr_time, double scale)
 {
     for (unsigned i = 0; i < fft_vals_.size(); ++i) {
-        double val = (i * glm::pi<double>() * 2.0) / fft_vals_.size();
-        val = glm::sin(val + curr_time);
-        fft_vals_[i] = safe_cast_d_to_f(val);
+        double val = (i * -glm::pi<double>() * scale) / fft_vals_.size();
+        val = glm::sin(val + curr_time * 5.0);
+        val = val * 0.5 + 0.5; // normalize
+        fft_vals_[i] = safe_float_cast(val);
     }
 }
 
@@ -25,5 +23,5 @@ const std::vector<float> &Orb::get_fft_vals() const
 {
     return fft_vals_;
 }
-} // namespace sim
+} // namespace vmp
 

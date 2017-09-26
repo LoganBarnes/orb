@@ -2,13 +2,13 @@
 #include <orb/OrbRenderer.hpp>
 #include <sim-driver/OpenGLSimulation.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include <orb/OrbUtil.hpp>
 
 class Simulator
 {
 public:
     Simulator(int, int, sim::SimData *pSimData)
-        : renderer_{sim::Orb{10}},
+        : renderer_{vmp::Orb{128}},
           simData_{*pSimData}
     {
         simData_.camera().setNearPlane(0.1f);
@@ -16,16 +16,15 @@ public:
         simData_.cameraMover.setUsingOrbitMode(true);
         simData_.cameraMover.setOrbitOrigin({0, 0, 0});
         simData_.cameraMover.setOrbitOffsetDistance(5);
-        simData_.cameraMover.pitch(glm::half_pi<float>() * -0.15f);
 
         prevCam_ = simData_.camera();
+        renderer_.update(0, scale_);
     }
 
-    void onUpdate(double worldTime, double timeStep)
+    void onUpdate(double worldTime, double time_step)
     {
-        renderer_.orb.update(worldTime, timeStep);
+        renderer_.update(worldTime, scale_);
         prevCam_ = simData_.camera();
-        simData_.cameraMover.yaw(static_cast<float>(timeStep * 25.0));
     }
 
     void onRender(int, int, double alpha)
@@ -58,12 +57,18 @@ public:
         if (ImGui::Begin("Window", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::Text("Framerate: %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
             renderer_.configureGui();
+
+            if (ImGui::CollapsingHeader("Orb Settings", "orb_settings", false, true)) {
+                ImGui::SliderFloat("Scale", &scale_, 1.0f, 20.0f);
+            }
         }
         ImGui::End();
     }
 
 private:
-    sim::OrbRenderer renderer_;
+    float scale_{10.0f};
+
+    vmp::OrbRenderer renderer_;
     sim::Camera prevCam_;
 
     sim::SimData &simData_;

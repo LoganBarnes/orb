@@ -41,12 +41,10 @@ set(SOURCE_FILES
         # orb
         src/orb/Orb
         src/orb/OrbRenderer
-        src/orb/OrbMain.cpp
+        src/orb/OrbUtil
+        src/orb/OrbMain
         )
 
 add_executable(OrbExec ${SOURCE_FILES})
 target_include_directories(OrbExec PUBLIC src ${CMAKE_BINARY_DIR})
 target_link_libraries(OrbExec SimDriver)
-
-add_executable(VboTest src/orb/VboTests.cpp)
-target_link_libraries(VboTest SimDriver)

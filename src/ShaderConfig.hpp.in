@@ -2,7 +2,12 @@
 
 #include <string>
 
-namespace hmr
+namespace vmp
 {
-const static std::string SHADER_PATH = "@CMAKE_CURRENT_SOURCE_DIR@/src/shaders/";
+static const std::string &shader_path()
+{
+    static std::string path{"@CMAKE_CURRENT_SOURCE_DIR@/src/shaders/"};
+    return path;
 }
+
+} // namespace vmp

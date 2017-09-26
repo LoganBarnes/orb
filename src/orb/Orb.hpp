@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-namespace sim
+namespace vmp
 {
 
 class Orb
@@ -11,12 +11,12 @@ class Orb
 public:
     explicit Orb(std::size_t size);
 
-    void update(double curr_time, double time_step);
+    void update(double curr_time, double scale);
 
     const std::vector<float> &get_fft_vals() const;
 private:
     std::vector<float> fft_vals_; // normalized heights
 };
 
-} // namespace sim
+} // namespace vmp
 

@@ -5,26 +5,27 @@
 #include <sim-driver/renderers/RendererHelper.hpp>
 #include <sim-driver/meshes/MeshHelper.hpp>
 
-namespace sim
+namespace vmp
 {
 
 class OrbRenderer
 {
 public:
-    explicit OrbRenderer(sim::Orb heightMap);
+    explicit OrbRenderer(vmp::Orb orb);
 
-    void render(float alpha, const Camera &camera) const;
+    void update(double world_time, double scale);
+    void render(float alpha, const sim::Camera &camera) const;
 
     void configureGui();
 
     void resize(int width, int height);
+    sim::PosNormTexData create_sphere_mesh_data(int u_divisions, int v_divisions);
 
-    sim::Orb orb;
-
+    vmp::Orb orb;
 private:
-//    std::shared_ptr<GLuint> program_;
+    std::shared_ptr<GLuint> texture_{nullptr};
     sim::PosNormTexRenderer renderer_;
     sim::PosNormTexMesh mesh_;
 };
 
-} // namespace sim
+} // namespace vmp
