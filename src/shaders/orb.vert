@@ -1,9 +1,7 @@
 #version 410
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(location = 0) in vec3 phis;
-layout(location = 1) in vec3 theta;
-layout(location = 2) in vec2 tex_coords;
+layout(location = 0) in vec3 tex_coords;
 
 uniform mat4 screen_from_world        = mat4(1.0);
 uniform mat4 world_from_local         = mat4(1.0);
@@ -163,15 +161,14 @@ void curve_point(in float t, in float theta, out vec3 point, out vec3 normal)
 
 void main(void)
 {
-    float theta = theta.x * 2.0 * PI;
-    float phi = phis.y * PI;
+    float theta = tex_coords.x * 2.0 * PI;
 
     vec3 point, normal;
     curve_point(tex_coords.y, theta, point, normal);
 
     vertex.world_position = vec3(world_from_local * vec4(point, 1.0));
     vertex.world_normal = normalize(world_from_local_normals * normal);
-    vertex.tex_coords = tex_coords;
+    vertex.tex_coords = vec2(tex_coords);
 
     gl_Position = screen_from_world * vec4(vertex.world_position, 1.0);
 }

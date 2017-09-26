@@ -19,13 +19,13 @@ public:
     void configureGui();
 
     void resize(int width, int height);
-    sim::PosNormTexData create_sphere_mesh_data(int u_divisions, int v_divisions);
+    sim::PosData create_sphere_mesh_data(int u_divisions, int v_divisions);
 
     vmp::Orb orb;
 private:
     std::shared_ptr<GLuint> texture_{nullptr};
-    sim::PosNormTexRenderer renderer_;
-    sim::PosNormTexMesh mesh_;
+    sim::PosRenderer renderer_;
+    sim::PosMesh mesh_;
 };
 
 } // namespace vmp

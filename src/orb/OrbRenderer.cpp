@@ -17,9 +17,7 @@ namespace
 const std::vector<sim::VAOElement> &phiThetaElements()
 {
     static std::vector<sim::VAOElement> elements{
-        {"phis", 3, GL_FLOAT, reinterpret_cast<void *>(offsetof(sim::PosNormTexVertex, position))},
-        {"theta", 3, GL_FLOAT, reinterpret_cast<void *>(offsetof(sim::PosNormTexVertex, normal))},
-        {"tex_coords", 2, GL_FLOAT, reinterpret_cast<void *>(offsetof(sim::PosNormTexVertex, texCoords))},
+        {"tex_coords", 3, GL_FLOAT, reinterpret_cast<void *>(offsetof(sim::PosVertex, position))}
     };
     return elements;
 }
@@ -98,9 +96,9 @@ void OrbRenderer::resize(int width, int height)
     renderer_.onResize(width, height);
 }
 
-sim::PosNormTexData OrbRenderer::create_sphere_mesh_data(int u_divisions, int v_divisions)
+sim::PosData OrbRenderer::create_sphere_mesh_data(int u_divisions, int v_divisions)
 {
-    sim::PosNormTexData data{};
+    sim::PosData data{};
 
     data.vbo.reserve(static_cast<unsigned>((u_divisions + 2) * (v_divisions + 2)));
 
@@ -109,7 +107,7 @@ sim::PosNormTexData OrbRenderer::create_sphere_mesh_data(int u_divisions, int v_
 
         for (int phii = 0; phii < (v_divisions + 2); ++phii) {
             float v = float(phii) / (v_divisions + 1);
-            data.vbo.emplace_back(sim::PosNormTexVertex{{0, v, 0}, {u, 0, 0}, {u, v}});
+            data.vbo.emplace_back(sim::PosVertex{{u, v, 0}});
         }
     }
 

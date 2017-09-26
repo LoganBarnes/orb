@@ -30,9 +30,9 @@ set(SIM_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 # compile sim with current project
 add_subdirectory(${sim_SOURCE_DIR} ${sim_BINARY_DIR})
 
-set(COMPILE_FLAGS ${CMAKE_CXX_FLAGS})
+set(COMPILER_FLAGS ${CMAKE_CXX_FLAGS})
 if (NOT MSVC)
-    list(APPEND COMPILE_FLAGS "-Wall -Wextra -Werror -pedantic")
+    set(COMPILER_FLAGS "${COMPILER_FLAGS} -Wall -Wextra -Werror -pedantic")
 endif ()
 
 set(SOURCE_FILES
@@ -48,3 +48,4 @@ set(SOURCE_FILES
 add_executable(OrbExec ${SOURCE_FILES})
 target_include_directories(OrbExec PUBLIC src ${CMAKE_BINARY_DIR})
 target_link_libraries(OrbExec SimDriver)
+set_target_properties(OrbExec PROPERTIES COMPILE_FLAGS ${COMPILER_FLAGS})
