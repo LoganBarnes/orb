@@ -51,7 +51,7 @@ vec3 sphere_point(in float phi, in float theta)
 
 float U(in int i)
 {
-    return clamp(i - degree, 0.0, float(num_spans));
+    return clamp(float(i - degree), 0.0, float(num_spans));
 }
 
 mat3 ders_basis_funs(in int i, in float u)
@@ -97,17 +97,16 @@ mat3 ders_basis_funs(in int i, in float u)
         a[0][0] = 1.0;
 
         {
-            int k = 1;
             float d = 0.0;
-            int rk = r - k;
-            int pk = degree - k;
-            if ( r >= k)
+            int rk = r - 1;
+            int pk = degree - 1;
+            if (r >= 1)
             {
-                a[s2][0] = a[s1][0] / ndu[pk + 1][rk];
+                a[s2][0] = a[s1][0] / ndu[pk + 1][max(rk, 0)];
                 d = a[s2][0] * ndu[rk][pk];
             }
             int j1 = (rk >= -1 ? 1 : -rk);
-            int j2 = (r - 1 <= pk ? k - 1 : degree - r);
+            int j2 = (r - 1 <= pk ? 0 : degree - r);
 
             for (int j = j1; j <= j2; ++j)
             {
@@ -116,10 +115,10 @@ mat3 ders_basis_funs(in int i, in float u)
             }
             if (r <= pk)
             {
-                a[s2][k] = -a[s1][k - 1] / ndu[pk + 1][r];
-                d += a[s2][k] * ndu[r][pk];
+                a[s2][1] = -a[s1][0] / ndu[pk + 1][r];
+                d += a[s2][1] * ndu[r][pk];
             }
-            ders[k][r] = d;
+            ders[1][r] = d;
         }
     }
 
